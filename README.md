@@ -59,4 +59,16 @@ python manage.py test
 - Price source: `GET /api/v3/ticker/price?symbol=SYMBOL` on Binance public API.
 - No API key needed for current price.
 
+### Tech stack used
+- **Python**: 3.10+
+- **Django**: 4.x
+- **Django REST Framework (DRF)**
+- **HTTP client**: `requests`
+- **Env management**: `python-dotenv`
+- **Database**: SQLite (default Django config)
+- **Templates/UI**: Django templates with custom HTML/CSS
+- **Testing**: Django `TestCase`, `unittest.mock`
+- **External API**: Binance REST API (`/api/v3/ticker/price`)
+- **Runtime**: WSGI (Django `wsgi.py`)
+
 
