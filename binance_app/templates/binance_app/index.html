@@ -1,0 +1,93 @@
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+ 	<meta charset="UTF-8" />
+ 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ 	<title>Binance Trade Calculator</title>
+ 	<style>
+ 		:root { --primary:#f0b90b; --primary-dark:#c79a08; --bg:#0b1020; --card:#11162a; --text:#e8eefc; --muted:#9aa6bf; }
+ 		body { margin: 0; background: radial-gradient(1200px 600px at 10% -10%, #152042, transparent), linear-gradient(180deg, #0b1020, #0b1020); color: var(--text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+ 		.container { max-width: 720px; margin: 0 auto; padding: 2rem 1rem; }
+ 		.header { display:flex; align-items:center; gap:.6rem; margin-bottom: 1rem; }
+ 		.header .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--primary); box-shadow: 0 0 16px rgba(240,185,11,.6); }
+ 		h1 { margin: 0; font-size: 1.6rem; letter-spacing:.3px; }
+ 		.card { background: var(--card); border: 1px solid rgba(255,255,255,.06); border-radius: 16px; padding: 1.25rem; box-shadow: 0 10px 24px rgba(0,0,0,.35); }
+ 		.form-grid { display:grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+ 		.form-grid .full { grid-column: 1 / -1; }
+ 		label { display:block; margin-bottom:.35rem; font-size:.9rem; color: var(--muted); }
+ 		input { width:100%; background:#0d1326; border: 1px solid rgba(255,255,255,.08); color:var(--text); padding:.7rem .2rem; border-radius:10px; outline:none; transition:border-color .2s, box-shadow .2s; }
+ 		input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(240,185,11,.18); }
+ 		button { margin-top:.5rem; width: 100%; border:0; background: var(--primary); color:#0b0e19; font-weight: 700; padding:.8rem 1rem; border-radius: 12px; cursor:pointer; transition: transform .05s ease, background .2s; }
+ 		button:hover { background: var(--primary-dark); }
+ 		button:active { transform: translateY(1px); }
+ 		.helper { display:block; margin-top:.35rem; font-size:.8rem; color: var(--muted); }
+ 		.result { position: relative; background: linear-gradient(180deg, rgba(13,19,38,.85), rgba(13,19,38,.85)); border: 1px solid rgba(255,255,255,.06); padding: 1rem 1rem; border-radius: 16px; margin-top: 1rem; overflow:hidden; }
+ 		/* Binance icon background */
+ 		.result::before { content:""; position:absolute; inset:0; background-image: url('https://bin.bnbstatic.com/static/images/common/logo.png'); background-repeat: no-repeat; background-position: right 12px center; background-size: 120px; opacity: .15; pointer-events:none; }
+ 		.kv { display:grid; grid-template-columns: 1fr 1fr; gap:.75rem 1rem; }
+ 		.kv .item { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.06); border-radius: 12px; padding:.8rem; }
+ 		.kv .label { font-size:.78rem; color: var(--muted); }
+ 		.kv .value { margin-top:.2rem; font-size:1.05rem; font-weight:700; color: var(--text); }
+ 		.error { color: #ff6b6b; margin-top: .75rem }
+ 		@media (max-width: 640px) { .form-grid { grid-template-columns: 1fr; } .kv { grid-template-columns: 1fr; } }
+ 	</style>
+ </head>
+<body>
+ 	<div class="container">
+ 		<div class="header">
+ 			<div class="dot"></div>
+ 			<h1>Binance Trade Calculator</h1>
+ 		</div>
+ 		<div class="card">
+ 			<form method="post">
+ 				{% csrf_token %}
+ 				{{ form.non_field_errors }}
+ 				<div class="form-grid">
+ 					<div class="full">
+ 						<label for="id_symbol">{{ form.symbol.label }}</label>
+ 						{{ form.symbol }}
+ 						<small class="helper">{{ form.symbol.help_text }}</small>
+ 					</div>
+ 					<div>
+ 						<label for="id_tp_percent">{{ form.tp_percent.label }}</label>
+ 						{{ form.tp_percent }}
+ 					</div>
+ 					<div>
+ 						<label for="id_sl_percent">{{ form.sl_percent.label }}</label>
+ 						{{ form.sl_percent }}
+ 					</div>
+ 					<div class="full">
+ 						<button type="submit">Calculate</button>
+ 					</div>
+ 				</div>
+ 			</form>
+ 			{% if error %}
+ 				<p class="error">{{ error }}</p>
+ 			{% endif %}
+ 		</div>
+
+ 		{% if result %}
+ 			<div class="result">
+ 				<div class="kv">
+ 					<div class="item">
+ 						<div class="label">Coin</div>
+ 						<div class="value">{{ result.symbol }}</div>
+ 					</div>
+ 					<div class="item">
+ 						<div class="label">Current Price</div>
+ 						<div class="value">{{ result.current_price }}</div>
+ 					</div>
+ 					<div class="item">
+ 						<div class="label">Take Profit</div>
+ 						<div class="value">{{ result.tp_target }}</div>
+ 					</div>
+ 					<div class="item">
+ 						<div class="label">Stop Loss</div>
+ 						<div class="value">{{ result.sl_target }}</div>
+ 					</div>
+ 				</div>
+ 			</div>
+ 		{% endif %}
+	</div>
+</body>
+</html>
