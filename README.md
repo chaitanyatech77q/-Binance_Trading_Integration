@@ -58,6 +58,13 @@ python manage.py test
 ## Notes
 - Price source: `GET /api/v3/ticker/price?symbol=SYMBOL` on Binance public API.
 - No API key needed for current price.
+- This project does not require any API keys or authentication.
+It uses Binance’s public REST endpoints (e.g., /api/v3/ticker/price) to fetch market data directly through the base URL:
+
+https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT
+
+
+Since only public market data is accessed, no private keys, secrets, or authentication tokens are used or stored in this project.
 
 ### Tech stack used
 - **Python**: 3.10+
